@@ -6,22 +6,56 @@ using UnityEngine.InputSystem;
 public class Brush : MonoBehaviour
 {
     public InputActionProperty buttonPressAction;
-    public GameObject sphere;
+    public Material drawMaterial;
 
-    // Start is called before the first frame update
+    private bool isDrawing;
+    private LineRenderer curDrawing;
+
+    private const float drawThreshold = 0.01f;
+    private const float drawWidth = 0.5f;
+
     void Start()
     {
-        buttonPressAction.action.performed += Draw;
+        isDrawing = false;
     }
 
-    // Update is called once per frame
     void Update()
     {
-        
+        if (!isDrawing && buttonPressAction.action.ReadValue<float>() > 0 ||
+            isDrawing && buttonPressAction.action.ReadValue<float>() == 0)
+        {
+            isDrawing = !isDrawing;
+        }
+
+        if (isDrawing)
+        {
+            Draw();
+        } else if (curDrawing != null)
+        {
+            curDrawing = null;
+        }
     }
 
-    void Draw(InputAction.CallbackContext ctx)
+    void Draw()
     {
-        Instantiate(sphere, transform.position, Quaternion.identity);
+        if (curDrawing == null)
+        {
+            curDrawing = new GameObject().AddComponent<LineRenderer>();
+            curDrawing.material = drawMaterial;
+            curDrawing.startColor = drawMaterial.color;
+            curDrawing.endColor = drawMaterial.color;
+            curDrawing.startWidth = drawWidth;
+            curDrawing.endWidth = drawWidth;
+            curDrawing.positionCount = 1;
+            curDrawing.SetPosition(0, transform.position);
+        } else
+        {
+            Vector3 curPosition = curDrawing.GetPosition(curDrawing.positionCount - 1);
+            if (Vector3.Distance(curPosition, transform.position) > drawThreshold)
+            {
+                curDrawing.positionCount++;
+                curDrawing.SetPosition(curDrawing.positionCount - 1, transform.position);
+            }
+        }
     }
 }

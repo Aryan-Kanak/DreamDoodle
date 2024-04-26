@@ -12,7 +12,7 @@ public class Brush : MonoBehaviour
     private LineRenderer curDrawing;
 
     private const float drawThreshold = 0.01f;
-    private const float drawWidth = 0.5f;
+    private const float drawWidth = 0.01f;
 
     void Start()
     {
@@ -41,9 +41,9 @@ public class Brush : MonoBehaviour
         if (curDrawing == null)
         {
             curDrawing = new GameObject().AddComponent<LineRenderer>();
-            curDrawing.material = drawMaterial;
-            curDrawing.startColor = drawMaterial.color;
-            curDrawing.endColor = drawMaterial.color;
+            //curDrawing.material = drawMaterial;
+            //curDrawing.startColor = drawMaterial.color;
+            //curDrawing.endColor = drawMaterial.color;
             curDrawing.startWidth = drawWidth;
             curDrawing.endWidth = drawWidth;
             curDrawing.positionCount = 1;

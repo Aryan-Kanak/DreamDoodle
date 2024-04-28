@@ -41,9 +41,9 @@ public class Brush : MonoBehaviour
         if (curDrawing == null)
         {
             curDrawing = new GameObject().AddComponent<LineRenderer>();
-            //curDrawing.material = drawMaterial;
-            //curDrawing.startColor = drawMaterial.color;
-            //curDrawing.endColor = drawMaterial.color;
+            curDrawing.material = drawMaterial;
+            curDrawing.startColor = drawMaterial.color;
+            curDrawing.endColor = drawMaterial.color;
             curDrawing.startWidth = drawWidth;
             curDrawing.endWidth = drawWidth;
             curDrawing.positionCount = 1;
